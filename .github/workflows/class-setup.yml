@@ -72,7 +72,8 @@ jobs:
         with:
           github-token: ${{ secrets.PAT }}
           script: |
-            const project_id = ${{ github.events.inputs.project_id }}; // Replace with your project ID
+            const project_id = ${{ github.event.inputs.project_id }};
+            console.log(project_id);
             const commenters = ${{ steps.commenters.outputs.commenters }};
 
             for (const commenter of commenters) {
