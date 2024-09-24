@@ -55,7 +55,7 @@ jobs:
         with:
           github-token: ${{ secrets.PAT }}
           script: |
-            const commenters = JSON.parse(${{ steps.commenters.outputs.commenters }});
+            const commenters = ${{ steps.commenters.outputs.commenters }};
 
             for (const commenter of commenters) {
               await github.rest.repos.addCollaborator({
@@ -72,7 +72,7 @@ jobs:
           github-token: ${{ secrets.PAT }}
           script: |
             const project_id = 'YOUR_PROJECT_ID'; // Replace with your project ID
-            const commenters = ${{ steps.fetch_comments.outputs.commenters }};
+            const commenters = ${{ steps.commenters.outputs.commenters }};
 
             for (const commenter of commenters) {
               await github.rest.projects.addCollaborator({
