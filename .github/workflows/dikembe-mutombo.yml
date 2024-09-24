@@ -20,7 +20,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4.0.0
 
-      - name: Verify the favorite number input
+      - if: ${{ !contains(github.event.issue.labels, 'Welcome') }}
+        name: Verify the favorite number input
         uses: ./.github/actions/enforce-favorite-number
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
