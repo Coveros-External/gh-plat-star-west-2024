@@ -47,15 +47,3 @@ jobs:
                 permission: 'push'
               });
             }
-
-      # Once the invites have been sent out, make the repository private
-      - name: Make the repository private
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.PAT }}
-          script: |
-            await github.rest.repos.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              private: true
-            });
