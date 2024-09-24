@@ -4,6 +4,10 @@ name: Class Setup
 
 on:
   workflow_dispatch:
+    inputs:
+      project_id:
+        description: "The project ID that is linked to this repository"
+        required: true
 
 permissions: write-all
 
@@ -42,8 +46,6 @@ jobs:
 
             const commenters = Array.from(comms);
 
-            //const commenters = response.data.map(issue => issue.user.login).filter(user => user != 'github-actions[bot]');
-
             console.log(commenters);
 
             core.setOutput("commenters", JSON.stringify(commenters));
@@ -53,7 +55,7 @@ jobs:
         with:
           github-token: ${{ secrets.PAT }}
           script: |
-            const commenters = ${{ steps.commenters.outputs.commenters }};
+            const commenters = JSON.parse('${{ steps.commenters.outputs.commenters }}');
 
             for (const commenter of commenters) {
               await github.rest.repos.addCollaborator({
@@ -61,5 +63,21 @@ jobs:
                 repo: context.repo.repo,
                 username: commenter,
                 permission: 'push'
+              });
+            }
+
+      - name: Add commenters to project
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PAT }}
+          script: |
+            const project_id = 'YOUR_PROJECT_ID'; // Replace with your project ID
+            const commenters = JSON.parse('${{ steps.fetch_comments.outputs.commenters }}');
+
+            for (const commenter of commenters) {
+              await github.rest.projects.addCollaborator({
+                project_id: project_id,
+                username: commenter,
+                permission: 'write'
               });
             }
