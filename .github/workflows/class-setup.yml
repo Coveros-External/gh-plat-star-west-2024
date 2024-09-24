@@ -4,11 +4,6 @@ name: Class Setup
 
 on:
   workflow_dispatch:
-    inputs:
-      project_id:
-        description: "The project ID that is linked to this repository"
-        type: string
-        required: true
 
 permissions: write-all
 
