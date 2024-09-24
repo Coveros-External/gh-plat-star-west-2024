@@ -55,7 +55,7 @@ jobs:
         with:
           github-token: ${{ secrets.PAT }}
           script: |
-            const commenters = ${{ steps.commenters.outputs.commenters }};
+            const commenters = JSON.parse(${{ steps.commenters.outputs.commenters }});
 
             for (const commenter of commenters) {
               await github.rest.repos.addCollaborator({
