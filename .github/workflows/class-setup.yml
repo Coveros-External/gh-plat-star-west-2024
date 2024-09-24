@@ -26,7 +26,7 @@ jobs:
               labels: "Welcome"
             });
 
-            const commenters = response.data.map(issue => issue.user.login).filter(user => user == 'github-actions[bot]');
+            const commenters = response.data.map(issue => issue.user.login).filter(user => user != 'github-actions[bot]');
 
             console.log(commenters);
 
