@@ -26,8 +26,23 @@ jobs:
               labels: "Welcome"
             });
 
-            console.log(response.data);
-            const commenters = response.data.map(issue => issue.user.login).filter(user => user != 'github-actions[bot]');
+            const issue = response.data[0];
+            const comms = new Set();
+
+            const commentsResponse = await octokit.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number
+            });
+
+            const comments = commentsResponse.data;
+            for (const comment of comments) {
+              comms.add(comment.user.login);
+            }
+
+            const commenters = Array.from(comms);
+
+            //const commenters = response.data.map(issue => issue.user.login).filter(user => user != 'github-actions[bot]');
 
             console.log(commenters);
 
